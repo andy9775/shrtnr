@@ -2,14 +2,14 @@
 
 var webpack = require('webpack');
 var path = require('path');
-
+var HMR_PORT = process.env.HMR_PORT || 8080;
 module.exports = {
   devtool: 'eval-source-map',
 
   entry: [
-    'webpack/hot/dev-server',
-    'webpack-hot-middleware/client',
-    './src/client/entry.js'
+    'webpack-dev-server/client?http://localhost:' + HMR_PORT,
+    'webpack/hot/only-dev-server',
+    './src/client/entry.jsx'
   ],
 
   resolve: {
@@ -27,9 +27,6 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
-    })
   ],
 
   module: {
@@ -40,10 +37,24 @@ module.exports = {
         exclude: 'node_modules',
         query: {
           presets: ['es2015', 'react'],
-        }, 
+          plugins: [
+            [
+              'react-transform',
+              {
+                transforms: [
+                  {
+                    transform: 'react-transform-hmr',
+                    imports: ['react'],
+                    locals: ['module']
+                  }
+                ]
+              }
+            ]
+          ]
+        },
         loader: 'babel'
       }
     ]
-  }
+  },
 
 };
