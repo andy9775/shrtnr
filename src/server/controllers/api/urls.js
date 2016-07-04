@@ -27,7 +27,7 @@ export function generateShortUrl(opt, data) {
     check.not.undefined(data),
     check.map(
       data,
-      { longUrl: check.string }
+      {longUrl: check.string}
     )]),
     () => {
       logger.error(chalk.red.bold('Invalid arguments to generateShortUrl()'));
@@ -44,7 +44,7 @@ export function generateShortUrl(opt, data) {
         errorMessage: 'Invalid URL'
       })));
     }
-    // ensure URL is consistant 
+    // ensure URL is consistant
     data.longUrl = url.parse(data.longUrl).href;
 
     if (data.hasOwnProperty('userName')) {
@@ -55,20 +55,23 @@ export function generateShortUrl(opt, data) {
   });
 }
 
-
 /* ==================== private methods ==================== */
 /**
- * Queries the Database and if an entry for the long url exists then returns    * the existing result. Else generates a unique short url. 
- * 
+ * Queries the Database and if an entry for the long url exists then returns
+ * * the existing result. Else generates a unique short url.
+ *
  * @param {function} resolve - callback function to resolve the promise
  * @param {function} reject - promise callback to reject the request
  * @param {object} data - request data
  */
 function generateUrl(resolve, reject, data) {
   db(urlsSpec.tableName)
-    .where({ long_url: data.longUrl, user_name: null }) // query
+    .where({
+      long_url: data.longUrl,
+      user_name: null
+    }) // query
     .first('*') // first result
-    .then(function (result) {
+    .then(function(result) {
       if (result != null) { // global URL exists
         var shortUrl = url.resolve(config.domain,
           ids.encode(Number(result.id)));
@@ -76,16 +79,16 @@ function generateUrl(resolve, reject, data) {
           longUrl: data.longUrl,
           shortUrl: shortUrl
         });
-      } else {// no entry exists for this URL
+      } else { // no entry exists for this URL
         generateUniqueUrl(resolve, reject, data); // generate a new one
       }
     });
 }
 /**
  * Creates and resolves a unique short url
- * 
+ *
  * @param {function} resolve - promise callback to reolve the request
- * @param {function} reject - promise callback to reject the request 
+ * @param {function} reject - promise callback to reject the request
  * @param {object} data - request data
  */
 function generateUniqueUrl(resolve, reject, data) {
@@ -96,7 +99,7 @@ function generateUniqueUrl(resolve, reject, data) {
     })
     .into(urlsSpec.tableName)
     .returning('id')
-    .then(function (id) {
+    .then(function(id) {
       if (id) {
         id = id[0];
         var shortUrl = url.resolve(config.domain, ids.encode(Number(id)));
@@ -105,8 +108,7 @@ function generateUniqueUrl(resolve, reject, data) {
           longUrl: data.longUrl,
           shortUrl: shortUrl
         });
-      }
-      else {
+      } else {
         reject(new Error(JSON.stringify({
           errorMessage: 'Cannot generate short URL'
         })));
