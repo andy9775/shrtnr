@@ -1,23 +1,19 @@
-/**
- * An opensource URL shortener
- *
- * Coded by: Andy (github.com/andy9775)
- */
-// ============= VS code typings reference =============
-/// <reference path="typings/main.d.ts" />
-// =====================================================
 /*
-Home Page
-*/
+ Home Page
+ */
 
-import React from 'react';
+import React, { Component } from 'react';
+import styles from './style';
+import URLForm from './Elements/URLForm';
 
-export class Home extends React.Component {
-  render(){
-      return (
-        <div>
-          hello world
-        </div>
-      );
-  }
+export default class Home extends Component {
+	render() {
+		return (
+			<div style={ styles.container }>
+				<URLForm />
+				<div />
+			</div>
+		);
+	}
+
 }

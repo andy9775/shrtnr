@@ -1,4 +1,3 @@
-/// <reference path="react-router/react-router.d.ts" />
 import React from 'react';
 import {match, RouterContext} from 'react-router';
 import {Provider} from 'react-redux';
@@ -29,25 +28,25 @@ export function routerMatch(routes, location, store) {
       } else if (redirectLocation) {
         resolve({ redirect: redirectLocation });
       } else if (renderProps) {
-         
-        let renderedComponent; 
-        if (store){
-        renderedComponent =  ReactDOMServer.renderToString(
+
+        let renderedComponent;
+        if (store) {
+          renderedComponent = ReactDOMServer.renderToString(
             <Provider store={store}>
               <RouterContext {...renderProps}/>
             </Provider >
           );
-      } else {
-        renderedComponent = ReactDOMServer.renderToString(
-          <RouterContext {...renderProps}/>
-        )
-      }
+        } else {
+          renderedComponent = ReactDOMServer.renderToString(
+            <RouterContext {...renderProps}/>
+          );
+        }
         // resolve the rendered component and the store (both strings)
-        resolve({html: renderedComponent, store: JSON.stringify(store)});
+        resolve({ html: renderedComponent, store: JSON.stringify(store) });
       } else {
         reject({ type: ERROR_TYPES.NO_RENDER_PROPS });
       }
     });
   });
- 
+
 };

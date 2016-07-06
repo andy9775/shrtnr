@@ -2,24 +2,30 @@
 require('babel-core/register')();
 require('babel-polyfill');
 
-var db = require('../../../src/server/controllers/lib').db;
-var config = require('../../../config');
+var db = require('../../../../src/server/controllers/lib').db;
+var config = require('../../../../config');
 var Hashids = require('hashids');
 var mockKnex = require('mock-knex');
 var chai = require('chai');
 var url = require('url');
-var {resolveShortUrl} = require('../../../src/server/controllers/frontend');
+var {resolveShortUrl} = require('../../../../src/server/controllers/frontend/ResolveShortUrl');
 
 var ids = new Hashids(config.hashIdSalt, config.hashIdMinLength);
 
 var tracker = mockKnex.getTracker();
 tracker.install();
 
-mockKnex.mock(db);
-
 var expect = chai.expect;
 
 describe('Test URL resolve', function(){
+  // ensure DB is mocked only during this test suite
+  before(function() {
+    mockKnex.mock(db);
+  });
+  after(function() {
+    mockKnex.unmock(db);
+  });
+  
   it('Return a url from the database', function(){
       // variables
       var entryId = '123';

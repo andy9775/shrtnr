@@ -2,13 +2,13 @@
 require('babel-core/register')();
 require('babel-polyfill');
 
-var config = require('../../../config');
 var Hashids = require('hashids');
-var db = require('../../../src/server/controllers/lib').db;
 var mockKnex = require('mock-knex');
 var chai = require('chai');
 var url = require('url');
-var generateShortUrl = require('../../../src/server/controllers/api')
+var config = require('../../../../config');
+var db = require('../../../../src/server/controllers/lib').db;
+var generateShortUrl = require('../../../../src/server/controllers/api')
   .urls
   .generateShortUrl;
 
@@ -17,21 +17,26 @@ var ids = new Hashids(config.hashIdSalt, config.hashIdMinLength);
 var tracker = mockKnex.getTracker();
 tracker.install();
 
-mockKnex.mock(db);
-
 var expect = chai.expect;
 
-describe('Test short URL generation', function () {
+describe('Test short URL generation', function() {
+  // ensure DB is mocked only during this test suite
+  before(function() {
+    mockKnex.mock(db);
+  });
+  after(function() {
+    mockKnex.unmock(db);
+  });
 
-  it('Should generate a unique url if none exist', function () {
+  it('Should generate a unique url if none exist', function() {
     // variables
     var opt = {};
-    var data = { longUrl: 'http://www.example.com/' };
+    var data = {longUrl: 'http://www.example.com/'};
     var idResponse = '123';
     var expected = url.resolve(config.domain, ids.encode(Number(idResponse)));
 
     // when
-    tracker.on('query', function (query) {
+    tracker.on('query', function(query) {
       if (query.method == 'first') {
         // ensure initial query to find existing entry returns nothing
         query.response(null);
@@ -48,15 +53,15 @@ describe('Test short URL generation', function () {
   });
 
   it('Should return an existing URL if one exists in the database',
-    function () {
+    function() {
       // variables
       var opt = {};
-      var data = { longUrl: 'http://www.example.com' };
+      var data = {longUrl: 'http://www.example.com'};
       var entryId = '1234';
       var expectedUrl = url.resolve(config.domain, ids.encode(Number(entryId)));
 
       // when
-      tracker.on('query', function (query) {
+      tracker.on('query', function(query) {
         if (query.method == 'first') {
           // ensure initial query to get existing entry returns one
           query.response({
@@ -77,15 +82,15 @@ describe('Test short URL generation', function () {
     });
 
   it('Should return an error when a unique URL cannot be generated',
-    function () {
+    function() {
       // variables
       var opt = {};
-      var data = { longUrl: 'http://www.example.com' };
+      var data = {longUrl: 'http://www.example.com'};
       var entryId = '1234';
       var expectedUrl = url.resolve(config.domain, ids.encode(Number(entryId)));
 
       // when
-      tracker.on('query', function (query) {
+      tracker.on('query', function(query) {
         query.response(null);
       });
 

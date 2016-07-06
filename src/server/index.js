@@ -1,11 +1,3 @@
-/**
- * Open source URL shortening service
- *
- * Coded by: Andy (github.com/andy9775)
- */
-// ============= VS code typings reference =============
-/// <reference path="typings/main.d.ts" />
-// =====================================================
 /*
 Main server configuration, setup and start
 */
@@ -17,21 +9,26 @@ import path from 'path';
 import compression from 'compression';
 import expressHandlebars from 'express-handlebars';
 import helmet from 'helmet';
+import bodyParser from 'body-parser';
+import {logger} from '../lib/Logger';
 
-import * as routes from './routes';
+import * as routes from './controllers/routes';
 
 var app;
 const PORT = process.env.PORT || 3000;
-// import the express app
-// TODO conditional imports in es2015
-if (process.env.NODE_ENV == 'development') {
+/* import the express app tailored to the environment
+   e.g. development or production settings
+*/
+if (process.env.NODE_ENV == 'development'|| process.env.NODE_ENV == 'test') {
   app = require('./dev').default;
 } else {
   app = require('./prod').default;
 }
+
 // setup middleware shared between dev and prod environment
 app.use(helmet());
 app.use(compression());
+app.use(bodyParser.json());
 
 // setup handlebars middleware
 app.engine('handlebars',
@@ -44,20 +41,19 @@ app.set('views', path.resolve(__dirname, 'templates'));
 app.enable('view cache');
 
 // configure routes
-app.use('/', routes.HomePage);
+app.use('/', routes.frontEnd);
+app.use('/api/v1', routes.api.v1);
 
 app.listen(PORT, (err) => {
   if (err) {
-    console.error(chalk.red.bold('ERROR ') + 'starting the app');
-    console.log(err.stack);
+    logger.error(chalk.red.bold('ERROR ') + 'starting the app');
+    logger.error(err.stack);
     process.exit(1);
   }
 
-  console.log(
+  logger.info(
     chalk.green.bold(
       process.env.NODE_ENV.toUpperCase()) +
     ' server started on port: ' +
     chalk.green.bold(PORT));
 });
-
-

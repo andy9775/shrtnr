@@ -1,0 +1,22 @@
+{
+  "ecmaVersion": 6,
+  "ecmaVersion": 5,
+  "libs": [
+    "browser"
+  ],
+  "plugins": {
+    "complete_strings": {
+      "maxLength": 15
+    },
+    "lint": {},
+    "node":{},
+    "node-express":{},
+    "node_resolve":{},
+    "guess-types":{},
+    "modules":{},
+    "doc_comment": {
+      "fullDocs": true,
+      "strong": true
+    }
+  }
+}

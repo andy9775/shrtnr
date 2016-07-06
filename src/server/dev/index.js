@@ -1,11 +1,6 @@
 /**
- * An opensource URL shortener
- *
- * Coded by: Andy (github.com/andy9775)
+ * Development specific server configuration
  */
-// ============= VS code typings reference =============
-/// <reference path="typings/main.d.ts" />
-// =====================================================
 
 import express from 'express';
 
@@ -13,16 +8,17 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import config from '../../../webpack.config.dev.js';
-import favicon from 'serve-favicon'; 
+import favicon from 'serve-favicon';
 import WebpackDevServer from 'webpack-dev-server';
 import chalk from 'chalk';
+import {logger} from '../../lib/Logger';
 
 var app = express();
-var compiler = webpack(config);;
+var compiler = webpack(config);
 var devMiddleware = webpackDevMiddleware(compiler, {
   noInfo: true,
-  publicPath: config.output.publicPath,
-})
+  publicPath: config.output.publicPath
+});
 var hotMiddleware = webpackHotMiddleware(compiler);
 
 app.use(devMiddleware);
@@ -35,13 +31,13 @@ new WebpackDevServer(webpack(config), {
   publicPath: config.output.publicPath,
   hot: true,
   historyApiFallback: true
-}).listen(HMR_PORT, 'localhost', function (err, result) {
+}).listen(HMR_PORT, 'localhost', function(err, result) {
   if (err) {
-    return console.log(err);
+    return logger.eror(err);
   }
-  console.log(
-    chalk.blue('...react hot module reload server') + 
-    ' started on port: ' + 
+  logger.info(
+    chalk.blue('...react hot module reload server') +
+    ' started on port: ' +
     chalk.dim.yellow(HMR_PORT));
 });
 

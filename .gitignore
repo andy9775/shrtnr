@@ -1,7 +1,6 @@
-
 node_modules/
 typings/
+typings.json
 build/
 dist/
-.eslintrc
-jsconfig.json
+*.log
