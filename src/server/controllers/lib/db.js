@@ -22,7 +22,7 @@ var db = new knex({
 
 /**
  * Specifies the schema of the Urls table
- * 
+ *
  * Table:
  *  id |              long_url              | user_name
  * ----+------------------------------------+-----------
