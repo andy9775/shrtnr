@@ -4,24 +4,24 @@ var path = require('path');
 
 module.exports = {
   entry: [
-    './src/client/entry.js'
+    './src/client/entry.jsx'
   ],
-  
+
   resolve: {
     modulesDirectory: 'node_modules',
     extensions: ['', '.js', '.jsx'],
     root: path.resolve('./src')
   },
-  
+
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'public/dist'),
     filename: 'bundle.js',
-    publicPath: '/static/',
+    publicPath: '/dist/',
     pathinfo: false
   },
-  
+
   plugins:[
-    new webpack.OccurrenceOrderPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')
@@ -31,7 +31,7 @@ module.exports = {
       warnings: false
     })
   ],
-  
+
   module: {
     loaders: [
       {

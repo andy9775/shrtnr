@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 3000;
 /* import the express app tailored to the environment
    e.g. development or production settings
 */
-if (process.env.NODE_ENV == 'development'|| process.env.NODE_ENV == 'test') {
+if (process.env.NODE_ENV == 'development' || process.env.NODE_ENV == 'test') {
   app = require('./dev').default;
 } else {
   app = require('./prod').default;
@@ -33,11 +33,11 @@ app.use(bodyParser.json());
 // setup handlebars middleware
 app.engine('handlebars',
   expressHandlebars({
-    layoutDir: 'src/server/templates',
+    layoutDir: 'templates/',
     extname: 'handlebars'
   }));
 app.set('view engine', '.handlebars');
-app.set('views', path.resolve(__dirname, 'templates'));
+app.set('views', 'templates/');
 app.enable('view cache');
 
 // configure routes

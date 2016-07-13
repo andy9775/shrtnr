@@ -15,6 +15,12 @@
 
 // TODO create a plugins directory and a DefaultSignupValidator
 
+/*
+  When using heroku ensure that the following environment variable is setup
+      CLOUD = heroku
+  this information is used to serve static files (bundle.js)
+ */
+
 module.exports = {
   // comment out top properties to disable pages
   signupForm: { // if disabled, the signup page won't be accessable
@@ -49,7 +55,6 @@ module.exports = {
   errorRedirectUrl: '/',
 
   // db config
-  postgresPort: 5432,
   postgresDatabase: 'database-name',
   postgresUsername: 'input-username',
   postgresPass: 'input-pass',
@@ -70,6 +75,6 @@ module.exports = {
       The minimum length of the url hash. That is, if this is set to 8 a short
       url will have a path length of at leaset 8 characters.
   */
-  hashIdMinLength: 5
+  hashIdMinLength: 5,
 
 }

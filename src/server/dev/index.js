@@ -24,7 +24,7 @@ var hotMiddleware = webpackHotMiddleware(compiler);
 app.use(devMiddleware);
 app.use(hotMiddleware);
 // express serves favicon in dev mode only
-app.use(favicon('src/server/public/favicon.ico'));
+app.use(favicon('public/favicon.ico'));
 
 const HMR_PORT = process.env.HMR_PORT || 8080;
 new WebpackDevServer(webpack(config), {
@@ -33,7 +33,7 @@ new WebpackDevServer(webpack(config), {
   historyApiFallback: true
 }).listen(HMR_PORT, 'localhost', function(err, result) {
   if (err) {
-    return logger.eror(err);
+    return logger.error(err);
   }
   logger.info(
     chalk.blue('...react hot module reload server') +

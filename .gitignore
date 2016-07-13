@@ -2,5 +2,5 @@ node_modules/
 typings/
 typings.json
 build/
-dist/
+public/dist/
 *.log

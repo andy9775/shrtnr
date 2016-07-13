@@ -64,6 +64,7 @@ describe('Test homepage', function() {
   });
 
   it('Ensure a click triggers an api call with invalid response', function(done) {
+    this.timeout(5000);
     // variables
     var longUrl = 'http://www.example.com';
     var hash = '19dg9';
