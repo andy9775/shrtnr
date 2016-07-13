@@ -18,7 +18,7 @@
     "make-dir:dist": "[ ! -d public/dist/ ] && mkdir public/dist/ || true",
     "clean-dir:dist": "[ -d public/dist/ ] && rm -r public/dist/** || npm run make-dir:dist",
 
-    "babel": "babel ./src --out-dir ./build",
+    "babel": "./node_modules/babel-cli/bin/babel.js ./src --out-dir ./build",
     "pack": "webpack --config webpack.config.prod.js",
 
     "build": "npm run clean-dir:build && npm run babel && npm run clean-dir:dist && npm run pack",
