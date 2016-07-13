@@ -55,16 +55,16 @@ module.exports = {
   errorRedirectUrl: '/',
 
   // db config
-  postgresDatabase: 'database-name',
-  postgresUsername: 'input-username',
-  postgresPass: 'input-pass',
+  postgresDatabase: process.env.DATABASE || 'database-name',
+  postgresUsername: process.env.DB_USERNAME || 'input-username',
+  postgresPass: process.env.DB_PASS || 'input-pass',
   poolMin: 3,
   poolMax: 20,
   poolTimeout: 10000,
-  databaseHost: '127.0.0.1',
+  databaseHost: process.env.DATABASE_URL || '127.0.0.1',
 
   // hashid config
-  hashIdSalt: '<insert-custom-string-to-generate-unique-URL>',
+  hashIdSalt: process.env.HASH_ID_SALT || '<insert-custom-string-to-generate-unique-URL>',
   /*
       the characters that can be used in the shortned URL path.
       This should be left alone in order to ensure that non-offensive
