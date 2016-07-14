@@ -4,3 +4,4 @@ typings.json
 build/
 public/dist/
 *.log
+*.log.*
